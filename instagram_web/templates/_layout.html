@@ -12,13 +12,138 @@
 
     {% assets "home_js" %}
       <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+      <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     {% endassets %}
 
     {% block header %}{% endblock %}
-    <title>{% block title %}{% endblock %}NEXTAGRAM</title>
+    <title>{% block title %} INSTACHILL {% endblock %}INSTACHILL</title>
   </head>
-  <body>
+    <body style="background-image:url(''); background:fixed; background-size:cover;">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <div class="d-flex justify-content-between">
+                    
+                    <div id='1'>
+                        <a href="/" class="navbar-brand">INSTACHILL</a>
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        {% if not current_user.is_authenticated %}
+                        <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#login-modal">
+                            Login
+                        </button>
+                        <button type="button" class="btn btn-outline-success" style="margin-left:10px"data-toggle="modal" data-target="#register-modal">
+                            Register
+                        </button>
+                        {% else %}
+                        <a class="btn btn-outline-secondary" href="{{ url_for('sessions.logout') }}">Logout</a>
+                        <a class='btn btn-primary href=' href="{{ url_for('users.show', username = current_user.username) }}">My Profile</a>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div id='2'>
+                    <form class="form-inline my-2 my-lg-0" >
+                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-primary my-2 my-sm-0" type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Login Modal -->
+        <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Login</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{url_for('sessions.login')}}" method='POST'>
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <div class="form-group">
+                                <label for="username">Username:</label>
+                                <input type="text" class="form-control" id="username" name="username">
+                            </div>
+                            <div class="form-group">
+                                <label for="pwd">Password:</label>
+                                <input type="password" class="form-control" id="pwd" name="password">
+                            </div>
+                            <div class="checkbox">
+                                <label><input type="checkbox"> Remember me</label>
+                            </div>                       
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <input type='submit' class='btn btn-primary' value='Log in'>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Register Modal -->
+        <div class="modal fade" id="register-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Register</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{url_for('users.create')}}" method="POST">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <div class="form-group">
+                                <label for="pwd">First name:</label>
+                                <input type="text" class="form-control" id="firstname" name="first_name">
+                            </div>
+                            <div class="form-group">
+                                <label for="pwd">Last name:</label>
+                                <input type="text" class="form-control" id="lastname" name="last_name">
+                            </div>
+                            <div class="form-group">
+                                <label for="pwd">Desired username:</label>
+                                <input type="text" class="form-control" id="username" name="username">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email address:</label>
+                                <input type="email" class="form-control" id="email" name="email">
+                            </div>
+                            <div class="form-group">
+                                <label for="pwd">Password:</label>
+                                <input type="password" class="form-control" id="pwd" name="password">
+                            </div>
+                            <div class="form-group">
+                                <label for="pwd">Re-type password:</label>
+                                <input type="password" class="form-control" id="pwd" name="re_password">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <input type="submit" class="btn btn-primary" value='Submit'>
+                            </div>
+                        </form>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div id="flash" class="mt-3 alert alert-{{ category }} w-75 text-center d-block mx-auto">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
     {% block content %}
     {% endblock %}
-  </body>
+    </body>
 </html>

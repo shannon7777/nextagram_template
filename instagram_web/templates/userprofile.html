@@ -1,0 +1,20 @@
+{% extends "_layout.html" %}
+{% block content %}
+<h1>{{ current_user.first_name }}</h1>
+<img src="{{ current_user.profile_image_url }}" alt="profile image" width="300px">
+<a href='{{ current_user.username }}/edit' class='btn btn-warning'>Edit profile</a>
+<form action="{{ url_for('posts.create', id=current_user.id) }}" method="POST" enctype="multipart/form-data">
+    <div class="form-group">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <label for="posts.create">Upload image</label>
+        <input type="submit" class="btn btn-warning" value="Upload">
+        <input type="file" class="form-control" name="user_file">
+    </div>
+</form>
+<div>
+{% for post in user.posts %}
+    <img src="{{ post.image_url }}" alt="{{ post.id}}" width="150pxx" height='150px'>
+{% endfor %}
+</div>
+
+{% endblock %}

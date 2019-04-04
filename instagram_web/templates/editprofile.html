@@ -1,0 +1,33 @@
+{% extends "_layout.html" %}
+{% block content %}
+<h1>Edit profile</h1>
+<form action="{{ url_for('users.update', username=current_user.username)}}" method="POST">
+    <div class="form-group" style='width:50%; padding:20px;'>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <label for="users.update">First Name:</label>
+        <input type="text" class="form-control" name="first_name" value="{{ current_user.first_name }}">
+        <label for="users.update">Last Name:</label>
+        <input type="text" class="form-control" name="last_name" value="{{ current_user.last_name }}">
+        <label for="users.update">Email:</label>
+        <input type="text" class="form-control" name="email" value="{{ current_user.email }}">
+        <label for="users.update">Username:</label>
+        <input type="text" class="form-control" name="username" value="{{ current_user.username }}">
+        <input type="submit" class="btn btn-outline-info mt-3" value="Update">
+    </div>
+</form>
+<!-- <form action="{{ url_for('users.upload_profile', id=current_user.id) }}" method="POST" enctype="multipart/form-data">
+    <div class="form-group">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <label for="users.upload">Upload Profile Image</label>
+        <input type="file" class="form-control" name="user_file">
+        <input type="submit" class="btn btn-warning" value="Upload">
+    </div>
+</form> -->
+
+<h3>Upload a profile picture</h3>
+<form action="{{ url_for('users.upload_profile', id=current_user.id) }}" method='POST' enctype="multipart/form-data">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    Select a file: <input type="file" class='form-control' name="user_file"><br><br>
+    <input type="submit" class='btn btn-primary' value='Upload'>
+</form>
+{% endblock %}
