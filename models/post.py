@@ -8,7 +8,7 @@ class Post(BaseModel):
     user_id = pw.ForeignKeyField(User, backref='posts', unique=False, on_delete='CASCADE', index=True)
     caption = pw.TextField(null=True)
     image_path = pw.CharField(unique=True, null=True)
-
+    
     @hybrid_property
     def image_url(self):
         user = User.get_by_id(self.user_id)

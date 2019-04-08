@@ -11,6 +11,7 @@ class User(UserMixin, BaseModel):
     username = pw.CharField(unique=True, index=True)
     password = pw.CharField(index=True)
     profile_image_path = pw.CharField(null=True)
+    is_private = pw.BooleanField(default=False)
 
     def validate(self):
         if len(self.password) < 6:
@@ -28,6 +29,14 @@ class User(UserMixin, BaseModel):
         else:
             return app.config['S3_LOCATION'] + '40_profile-placeholder.png_2019-04-03_122504.525938'
 
-        
+    @hybrid_property
+    # Users list of people I'M FOLLOWING
+    def list_of_idols_ids(self):
+        return [idol.idol_id for idol in self.idols if idol.is_approved]
+
+    @hybrid_property
+    # Users list of people FOLLOWING YOU
+    def list_of_fans_ids(self):
+        return [fan.fan_id for fan in self.fans if fan.is_approved]  
 
 

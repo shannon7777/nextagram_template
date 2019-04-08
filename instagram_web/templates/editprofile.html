@@ -15,19 +15,43 @@
         <input type="submit" class="btn btn-outline-info mt-3" value="Update">
     </div>
 </form>
-<!-- <form action="{{ url_for('users.upload_profile', id=current_user.id) }}" method="POST" enctype="multipart/form-data">
-    <div class="form-group">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-        <label for="users.upload">Upload Profile Image</label>
-        <input type="file" class="form-control" name="user_file">
-        <input type="submit" class="btn btn-warning" value="Upload">
-    </div>
-</form> -->
 
 <h3>Upload a profile picture</h3>
 <form action="{{ url_for('users.upload_profile', id=current_user.id) }}" method='POST' enctype="multipart/form-data">
-    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-    Select a file: <input type="file" class='form-control' name="user_file"><br><br>
-    <input type="submit" class='btn btn-primary' value='Upload'>
+    <div class='custom-file mb-3'>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <input class='btn btn-outline-secondary' type="file" name="user_file">
+        <input type="submit" class='btn btn-primary' value='Upload'>
+    </div>
 </form>
+
+<h3>Post an image</h3>
+<form action="{{ url_for('posts.create', id=current_user.id) }}" method='POST' enctype="multipart/form-data">
+    <div class='custom-file mb-3'>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <input class='btn btn-outline-secondary' type="file" name="user_file" multiple>
+        <input type="submit" class='btn btn-primary' value='Upload'>
+    </div>
+</form>
+
+<h2>Change profile privacy</h2>
+<form action="{{ url_for('users.toggle_privacy', id=current_user.id) }}" method="POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    {% if user.is_private %}
+    <input type="submit" class="btn btn-primary" value="Public"></a>
+    {% else %}
+    <input type="submit" class="btn btn-primary" value="Private"></a>
+    {% endif %}
+</form>
+
+{% if user.is_private %}
+<div>
+    <span class="badge badge-primary">Private</span>
+</div>
+{% else %}
+<div>
+    <span class="badge badge-danger">Public</span>
+</div>
+{% endif %}
+
 {% endblock %}

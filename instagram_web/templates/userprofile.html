@@ -1,20 +1,26 @@
 {% extends "_layout.html" %}
 {% block content %}
 <h1>{{ current_user.first_name }}</h1>
-<img src="{{ current_user.profile_image_url }}" alt="profile image" width="300px">
-<a href='{{ current_user.username }}/edit' class='btn btn-warning'>Edit profile</a>
-<form action="{{ url_for('posts.create', id=current_user.id) }}" method="POST" enctype="multipart/form-data">
-    <div class="form-group">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-        <label for="posts.create">Upload image</label>
-        <input type="submit" class="btn btn-warning" value="Upload">
-        <input type="file" class="form-control" name="user_file">
-    </div>
-</form>
+<div style="text-align: center">
+    <img src="{{ current_user.profile_image_url }}" alt="profile image" width="300px" height='300px' style='border-radius: 150px'><br>
+    <a href='{{ current_user.username }}/edit' class='btn btn-warning'>Edit profile</a>
+</div>
+
+
 <div>
-{% for post in user.posts %}
-    <img src="{{ post.image_url }}" alt="{{ post.id}}" width="150pxx" height='150px'>
-{% endfor %}
+    <h4 class="text-center mt-5 mb-5" style="margin-left: 20px">{{ current_user.username}} 's Posts</h4>
+    <div class="d-flex container">
+        <div class="row">
+            {% for post in user.posts %}
+            <div class="col-md-4 mt-3 mb-3 px-3 text-center">
+                <img src="{{ post.image_url }}" alt="{{ post.id}}" width="150pxx" height='150px' style='border-radius: 20px; margin:20px;'>
+                <div class="row">
+                    <a href="{{ url_for('payments.new_checkout', post_id=post.id) }}" class="btn btn-outline-success btn-sm mx-auto mb-3">Donate</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
 </div>
 
 {% endblock %}

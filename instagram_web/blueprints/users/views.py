@@ -99,3 +99,17 @@ def upload_profile(id):
     else:
         flash("Only jpg, jpeg, png and gif files allowed.")
         return redirect(url_for('users.edit', id=current_user.id))
+
+@users_blueprint.route('/<id>/toggle_privacy', methods=['POST'])
+def toggle_privacy(id):
+    user = User.get_by_id(id)
+    # user = User.get(User.id == current_user.id)
+    if current_user == user:
+        user.update(is_private = not user.is_private).where(User.id == current_user.id).execute()
+        flash('Succesfully updated profile privacy settings', "info")
+        return redirect(url_for('users.show', username = current_user.username)) 
+    else:
+        flash('You are not authorized to do that','danger')
+        return redirect(url_for('home'))
+    
+         

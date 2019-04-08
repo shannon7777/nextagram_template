@@ -11,8 +11,6 @@ posts_blueprint = Blueprint('posts',
                             __name__,
                             template_folder='templates')
 
-
-
 @posts_blueprint.route('/upload', methods=['POST'])
 def create():
     caption = request.form.get('caption')
@@ -30,6 +28,7 @@ def create():
     if file and allowed_file(file.filename):
         file.filename = secure_filename(str(user_id) + "_" + file.filename + "_" + str(datetime.datetime.now()))
         output = upload_file_to_s3(file, app.config["S3_BUCKET"])
+        
         if Post.create(user_id=user_id, caption=caption, image_path=output):
             flash("Successfully uploaded user image", "success")
             return redirect(url_for('users.show', username=current_user.username))

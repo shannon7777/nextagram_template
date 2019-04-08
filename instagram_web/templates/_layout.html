@@ -34,6 +34,7 @@
                         <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#login-modal">
                             Login
                         </button>
+                        <!-- <a href="{{ url_for('sessions.google_login') }}" class="btn btn-primary btn-sm">Login with Google</a> -->
                         <button type="button" class="btn btn-outline-success" style="margin-left:10px"data-toggle="modal" data-target="#register-modal">
                             Register
                         </button>
@@ -76,7 +77,8 @@
                             </div>
                             <div class="checkbox">
                                 <label><input type="checkbox"> Remember me</label>
-                            </div>                       
+                            </div>
+                            <a href="{{ url_for('sessions.google_login') }}" class="btn btn-primary btn-sm">Login with Google</a>                       
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
